@@ -19,7 +19,13 @@ const fields = [
     { id: 'nom', label: 'Nom', validate: (v) => v.trim().length >= 2, message: 'Le nom doit contenir au moins 2 caractères.' },
     { id: 'prenom', label: 'Prénom', validate: (v) => v.trim().length >= 2, message: 'Le prénom doit contenir au moins 2 caractères.' },
     { id: 'whatsapp', label: 'Déjà Inscrit sur Whatsapp', validate: (v) => v !== '', message: 'Veuillez indiquer si vous êtes déjà inscrit sur Whatsapp.' },
-    { id: 'telephone', label: 'Téléphone', validate: (v) => /^[\d\s\-\+\.]{8,}$/.test(v.trim()), message: 'Veuillez entrer un numéro de téléphone valide.' },
+    {
+        id: 'telephone', label: 'Téléphone', validate: (v) => {
+            const whatsappVal = document.getElementById('whatsapp').value;
+            if (whatsappVal === 'OUI') return true; // Skip validation if already on WhatsApp
+            return /^[\d\s\-\+\.]{8,}$/.test(v.trim());
+        }, message: 'Veuillez entrer un numéro de téléphone valide.'
+    },
     { id: 'activites', label: 'Activités', validate: (v) => v !== '', message: 'Veuillez choisir une activité.' },
     { id: 'positionnement', label: 'Positionnement', validate: (v) => v !== '', message: 'Veuillez choisir votre positionnement.' },
 ];
@@ -144,6 +150,12 @@ function hideSuccess() {
     document.querySelectorAll('.error-message').forEach((el) => {
         el.textContent = '';
     });
+    // Re-enable phone field after reset
+    const phoneInput = document.getElementById('telephone');
+    phoneInput.disabled = false;
+    phoneInput.style.opacity = '1';
+    phoneInput.style.cursor = '';
+    phoneInput.placeholder = '06 XX XX XX XX';
 }
 
 // --- Error overlay ---
@@ -159,6 +171,31 @@ function hideError() {
 // --- Button handlers ---
 btnNew.addEventListener('click', hideSuccess);
 btnRetry.addEventListener('click', hideError);
+
+// --- WhatsApp toggle: disable phone when already on WhatsApp ---
+function togglePhone() {
+    const whatsappSelect = document.getElementById('whatsapp');
+    const phoneInput = document.getElementById('telephone');
+    const phoneGroup = phoneInput.closest('.form-group');
+
+    if (whatsappSelect.value === 'OUI') {
+        phoneInput.value = '';
+        phoneInput.disabled = true;
+        phoneInput.style.opacity = '0.4';
+        phoneInput.style.cursor = 'not-allowed';
+        phoneInput.placeholder = 'Numéro non requis';
+        phoneGroup.classList.remove('has-error');
+        const errorEl = document.getElementById('telephone-error');
+        if (errorEl) errorEl.textContent = '';
+    } else {
+        phoneInput.disabled = false;
+        phoneInput.style.opacity = '1';
+        phoneInput.style.cursor = '';
+        phoneInput.placeholder = '06 XX XX XX XX';
+    }
+}
+
+document.getElementById('whatsapp').addEventListener('change', togglePhone);
 
 // --- Auto-capitalize Nom & Prénom ---
 ['nom', 'prenom'].forEach((id) => {
