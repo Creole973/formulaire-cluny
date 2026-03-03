@@ -1,0 +1,45 @@
+================================================================================
+HISTORIQUE DES PROMPTS - PROJET RESA CLUNY
+================================================================================
+
+--- HISTORIQUE DES CONVERSATIONS PRÉCÉDENTES ---
+
+Date : 2026-02-16
+Prompt / Objectif : Connecting Google Sheet Form
+(Connecter le formulaire web à un Google Sheet, déployer le Google Apps Script et configurer app.js)
+
+Date : 2026-02-20
+Prompt / Objectif : Refaire le formulaire Cluny
+(Recréer à l'identique le formulaire d'inscription Cluny avec HTML, CSS, JS et connexion au script)
+
+Date : 2026-02-22
+Prompt / Objectif : Fixing Form Submission
+(Correction de la soumission du formulaire)
+
+Date : 2026-02-22
+Prompt / Objectif : Publishing Form with GitHub Pages
+(Publier le formulaire en ligne avec GitHub Pages pour le rendre accessible publiquement)
+
+Date : 2026-03-01 12:36
+Prompt / Objectif : Personalized Project Creation
+(Créer la variante "RESA PERROQUET" à partir du projet "RESA CLUNY" avec un nouveau logo et des couleurs)
+
+Date : 2026-03-01 13:07
+Prompt / Objectif : associe le google sheet https://script.google.com/macros/s/AKfycbzmjZQZJKSi40H1v21Ty80H_kEGScarCONGw
+
+Date : 2026-03-01 13:11
+Prompt / Objectif : Fixing Admin Login Issue
+(Résoudre l'erreur d'identifiants incorrects sur le dashboard admin liés aux numéros avec des zéros initiaux)
+
+Date : 2026-03-01 19:07
+Prompt / Objectif : Fixing App Icon Display
+(Assurer que le logo de l'application s'affiche correctement sur l'écran d'accueil iOS et Android)
+
+
+--- NOUVEAUX PROMPTS ---
+
+Date : 2026-03-01 21:32:08
+Prompt : cree un fichier texte dans le dossier RESA CLUNY a partir de maintenant tu notera tout les prompt que je demande avec la date et l'heure afin d'avoir un historique complet, si tu peux ajoute tous les prompt utiliser dans ce projet pour avoir une chronologie parfaite
+
+Date : 2026-03-03 14:46:44
+Prompt : prends connaissance du dossier RESA PERROQUET, je souhaite que tu reproduit la maniere d'ajouter l'appllication sur les android et apple : le but est d'avoir le logo au lieu d'une lettre
