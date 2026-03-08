@@ -92,6 +92,18 @@ function showSuccessOverlay() {
     const overlay = document.getElementById('successOverlay');
     overlay.classList.remove('hidden');
     launchConfetti();
+
+    // Fermer l'overlay et recharger après 8 secondes automatiquement
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+        window.location.reload();
+    }, 8000);
+
+    // Ou fermer immédiatement au toucher/clic pour un autre test/inscription
+    overlay.addEventListener('click', () => {
+        overlay.classList.add('hidden');
+        window.location.reload();
+    });
 }
 
 function launchConfetti() {
