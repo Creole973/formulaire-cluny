@@ -192,9 +192,23 @@ function attemptLogin() {
         return;
     }
 
-    // Si les accès n'ont pas encore chargé
+    // Si les accès n'ont pas encore chargé — relancer le fetch et réessayer auto
     if (Object.keys(ADMIN_CREDENTIALS).length === 0) {
-        loginError.textContent = "Connexion au serveur... Réessayez dans un instant.";
+        loginError.textContent = "⏳ Chargement en cours...";
+        loginSubmit.textContent = "CHARGEMENT...";
+        loginSubmit.disabled = true;
+
+        // Relancer le fetch et réessayer le login automatiquement
+        fetchDashboardStats(false, function () {
+            loginSubmit.disabled = false;
+            loginSubmit.textContent = "CONNEXION";
+            if (Object.keys(ADMIN_CREDENTIALS).length > 0) {
+                // Réessayer automatiquement
+                attemptLogin();
+            } else {
+                loginError.textContent = "Erreur serveur. Vérifiez votre connexion internet.";
+            }
+        });
         return;
     }
 
@@ -243,30 +257,95 @@ window.handleDashboardStats = function (data) {
         }
         populateDateSelect();
         updateDashboardUI();
-        if (loginSubmit.textContent === "CHARGEMENT...") {
-            loginSubmit.textContent = "CONNEXION";
+        loginSubmit.textContent = "CONNEXION";
+        loginSubmit.disabled = false;
+
+        // Appeler le callback en attente si présent
+        if (_fetchCallback) {
+            var cb = _fetchCallback;
+            _fetchCallback = null;
+            cb();
         }
     } else {
         console.error("Erreur stats:", data);
-        loginError.textContent = "Erreur chargement des données.";
-        if (loginSubmit.textContent === "CHARGEMENT...") {
-            loginSubmit.textContent = "CONNEXION";
+        loginSubmit.textContent = "CONNEXION";
+        loginSubmit.disabled = false;
+        if (_fetchCallback) {
+            var cb = _fetchCallback;
+            _fetchCallback = null;
+            cb();
         }
     }
 };
 
-// Récupérer les stats depuis le Sheet (Via JSONP)
-function fetchDashboardStats(isSilent = false) {
+// Variable pour stocker le callback en attente
+var _fetchCallback = null;
+var _fetchRetries = 0;
+var _fetchTimeout = null;
+
+// Récupérer les stats depuis le Sheet (Via JSONP) — avec retry et timeout
+function fetchDashboardStats(isSilent, callback) {
     if (!isSilent) {
         loginSubmit.textContent = "CHARGEMENT...";
     }
 
+    if (callback) {
+        _fetchCallback = callback;
+    }
+
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0kdd2uqlNxqtX_Ii1r4ETzdSS7YHGwKJ59fAndUhu0TvW5LrzdeV1ytR75kAO-C2fdw/exec";
+
+    // Nettoyer tout ancien script/timeout
+    if (_fetchTimeout) clearTimeout(_fetchTimeout);
 
     const script = document.createElement('script');
     script.src = SCRIPT_URL + "?action=getStats&callback=handleDashboardStats&ts=" + Date.now();
+
+    // Gestion d'erreur : si le script échoue, on réessaie
+    script.onerror = function () {
+        script.remove();
+        _fetchRetries++;
+        if (_fetchRetries <= 3) {
+            console.log("JSONP retry " + _fetchRetries + "/3...");
+            setTimeout(function () { fetchDashboardStats(isSilent); }, 1500);
+        } else {
+            _fetchRetries = 0;
+            loginSubmit.textContent = "CONNEXION";
+            loginSubmit.disabled = false;
+            if (_fetchCallback) {
+                var cb = _fetchCallback;
+                _fetchCallback = null;
+                cb();
+            }
+        }
+    };
+
+    script.onload = function () {
+        script.remove();
+        _fetchRetries = 0;
+        if (_fetchTimeout) clearTimeout(_fetchTimeout);
+    };
+
     document.body.appendChild(script);
-    script.onload = () => script.remove();
+
+    // Timeout de sécurité : si rien après 10 secondes, réessayer
+    _fetchTimeout = setTimeout(function () {
+        if (Object.keys(ADMIN_CREDENTIALS).length === 0 && _fetchRetries < 3) {
+            _fetchRetries++;
+            console.log("JSONP timeout, retry " + _fetchRetries + "/3...");
+            try { script.remove(); } catch (e) { }
+            fetchDashboardStats(isSilent);
+        } else if (_fetchRetries >= 3) {
+            _fetchRetries = 0;
+            loginSubmit.textContent = "CONNEXION";
+            loginSubmit.disabled = false;
+            if (_fetchCallback) {
+                var cb = _fetchCallback;
+                _fetchCallback = null;
+                cb();
+            }
+        }
+    }, 10000);
 }
 
 // Peupler la liste des dates
