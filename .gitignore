@@ -1,6 +1,9 @@
 # Google Apps Script (server-side only)
 Code.gs
 
+# Admin credentials (confidentiel)
+IDENTIFIANTS ADMIN.txt
+
 # OS files
 Thumbs.db
 .DS_Store
