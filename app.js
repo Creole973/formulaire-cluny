@@ -29,6 +29,7 @@ document.getElementById('clunyForm').addEventListener('submit', function (e) {
 
     // Collect form data
     const formData = {
+        dateEvent: document.getElementById('dateEvent').value,
         nom: document.getElementById('nom').value,
         prenom: document.getElementById('prenom').value,
         whatsapp: document.getElementById('whatsapp').value,
