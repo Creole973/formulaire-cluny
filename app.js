@@ -1,21 +1,6 @@
-// Désactiver le téléphone si déjà inscrit sur WhatsApp
-document.getElementById('whatsapp').addEventListener('change', function () {
-    const telInput = document.getElementById('telephone');
-    const telWrapper = telInput.closest('.input-wrapper');
-    if (this.value === 'OUI') {
-        telInput.disabled = true;
-        telInput.value = '';
-        telInput.placeholder = 'Non requis (déjà sur WhatsApp)';
-        telWrapper.classList.add('input-disabled');
-        telInput.removeAttribute('required');
-    } else {
-        telInput.disabled = false;
-        telInput.placeholder = '06 XX XX XX XX';
-        telWrapper.classList.remove('input-disabled');
-        telInput.setAttribute('required', 'required');
-    }
-});
-
+// =============================================
+// SOUMISSION DU FORMULAIRE
+// =============================================
 document.getElementById('clunyForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -88,7 +73,7 @@ document.getElementById('clunyForm').addEventListener('submit', function (e) {
         // Nettoyer les éléments temporaires
         document.body.removeChild(iframe);
         document.body.removeChild(hiddenForm);
-    }, 2000);
+    }, 3000);
 });
 
 // =====================
@@ -99,22 +84,26 @@ function showSuccessOverlay() {
     overlay.classList.remove('hidden');
     launchConfetti();
 
-    // Fermer l'overlay et recharger après 8 secondes automatiquement
-    setTimeout(() => {
+    // Auto-fermeture après 8 secondes
+    const autoClose = setTimeout(() => {
         overlay.classList.add('hidden');
+        // Recharger la page pour remettre à zéro le formulaire
         window.location.reload();
     }, 8000);
 
-    // Ou fermer immédiatement au toucher/clic pour un autre test/inscription
-    overlay.addEventListener('click', () => {
+    // Fermer aussi si on clique dessus
+    overlay.addEventListener('click', function handler() {
+        clearTimeout(autoClose);
         overlay.classList.add('hidden');
+        overlay.removeEventListener('click', handler);
         window.location.reload();
     });
 }
 
 function launchConfetti() {
     const container = document.getElementById('confettiContainer');
-    const colors = ['#ff4444', '#ff9900', '#ffdd00', '#44bb44', '#4488ff', '#bb44ff', '#ff66bb', '#00cccc'];
+    // Palette verte Sonrisa
+    const colors = ['#2e8b3a', '#3dba55', '#52c96e', '#a8e6b4', '#1a7a2e', '#f9a825', '#ff6600', '#e91e63'];
     const count = 80;
 
     for (let i = 0; i < count; i++) {
@@ -144,4 +133,196 @@ function launchConfetti() {
     setTimeout(() => {
         container.innerHTML = '';
     }, 5000);
+}
+
+// =============================================
+// LOGIQUE ESPACE ADMIN
+// =============================================
+
+// Identifiants récupérés depuis Google Sheets
+let ADMIN_CREDENTIALS = {};
+
+// Pré-chargement des données en arrière-plan
+document.addEventListener('DOMContentLoaded', () => {
+    fetchDashboardStats(true); // true = silent load
+});
+
+// UI Elements Admin
+const adminBtn = document.getElementById('adminBtn');
+const loginModal = document.getElementById('loginModal');
+const loginClose = document.getElementById('loginClose');
+const adminPhone = document.getElementById('adminPhone');
+const adminPass = document.getElementById('adminPass');
+const loginSubmit = document.getElementById('loginSubmit');
+const loginError = document.getElementById('loginError');
+
+const adminDashboard = document.getElementById('adminDashboard');
+const adminLogout = document.getElementById('adminLogout');
+const adminDateSelect = document.getElementById('adminDateSelect');
+
+const statTotal = document.getElementById('statTotal');
+const statLeader = document.getElementById('statLeader');
+const statFollower = document.getElementById('statFollower');
+const statRepas = document.getElementById('statRepas');
+const noDataMsg = document.getElementById('noDataMsg');
+
+// Données des stats
+let dashboardData = {};
+
+// Ouvrir la modal de login
+adminBtn.addEventListener('click', () => {
+    loginModal.classList.remove('hidden');
+    adminPhone.value = '';
+    adminPass.value = '';
+    loginError.textContent = '';
+});
+
+// Fermer la modal
+loginClose.addEventListener('click', () => {
+    loginModal.classList.add('hidden');
+});
+
+// Tentative de connexion
+function attemptLogin() {
+    const phone = adminPhone.value.trim().replace(/\s/g, '');
+    const pass = adminPass.value.trim();
+
+    if (!phone || !pass) {
+        loginError.textContent = "Veuillez remplir tous les champs.";
+        return;
+    }
+
+    // Si les accès n'ont pas encore chargé
+    if (Object.keys(ADMIN_CREDENTIALS).length === 0) {
+        loginError.textContent = "Connexion au serveur... Réessayez dans un instant.";
+        return;
+    }
+
+    // Vérifier les credentials
+    if (ADMIN_CREDENTIALS[phone] && ADMIN_CREDENTIALS[phone] === pass) {
+        // Connexion réussie
+        loginError.textContent = "";
+        loginModal.classList.add('hidden');
+        openDashboard();
+    } else {
+        // Échec — effet de secousse
+        loginError.textContent = "Identifiants incorrects.";
+        loginModal.querySelector('.modal-card').animate([
+            { transform: 'translateX(0)' },
+            { transform: 'translateX(-10px)' },
+            { transform: 'translateX(10px)' },
+            { transform: 'translateX(-10px)' },
+            { transform: 'translateX(10px)' },
+            { transform: 'translateX(0)' }
+        ], { duration: 400, easing: 'ease-in-out' });
+        adminPass.value = '';
+    }
+}
+
+// Ouvrir le dashboard
+function openDashboard() {
+    adminDashboard.classList.remove('hidden');
+    dashboardData = {};
+    fetchDashboardStats();
+}
+
+// Déconnexion
+adminLogout.addEventListener('click', () => {
+    adminDashboard.classList.add('hidden');
+});
+
+// Changement de date sur le dashboard
+adminDateSelect.addEventListener('change', updateDashboardUI);
+
+// Callback global pour le JSONP
+window.handleDashboardStats = function (data) {
+    if (data.status === 'success') {
+        dashboardData = data.stats;
+        if (data.admins) {
+            ADMIN_CREDENTIALS = data.admins;
+        }
+        populateDateSelect();
+        updateDashboardUI();
+        if (loginSubmit.textContent === "CHARGEMENT...") {
+            loginSubmit.textContent = "CONNEXION";
+        }
+    } else {
+        console.error("Erreur stats:", data);
+        loginError.textContent = "Erreur chargement des données.";
+        if (loginSubmit.textContent === "CHARGEMENT...") {
+            loginSubmit.textContent = "CONNEXION";
+        }
+    }
+};
+
+// Récupérer les stats depuis le Sheet (Via JSONP)
+function fetchDashboardStats(isSilent = false) {
+    if (!isSilent) {
+        loginSubmit.textContent = "CHARGEMENT...";
+    }
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0kdd2uqlNxqtX_Ii1r4ETzdSS7YHGwKJ59fAndUhu0TvW5LrzdeV1ytR75kAO-C2fdw/exec";
+
+    const script = document.createElement('script');
+    script.src = SCRIPT_URL + "?action=getStats&callback=handleDashboardStats&ts=" + Date.now();
+    document.body.appendChild(script);
+    script.onload = () => script.remove();
+}
+
+// Peupler la liste des dates
+function populateDateSelect() {
+    adminDateSelect.innerHTML = '<option value="_TOTAL_">TOUTES LES DATES (GLOBAL)</option>';
+
+    const dates = Object.keys(dashboardData).filter(k => k !== '_TOTAL_');
+    dates.sort((a, b) => {
+        const [dayA, monthA, yearA] = a.split('/');
+        const [dayB, monthB, yearB] = b.split('/');
+        return new Date(yearB, monthB - 1, dayB) - new Date(yearA, monthA - 1, dayA);
+    });
+
+    dates.forEach(date => {
+        const option = document.createElement('option');
+        option.value = date;
+        option.text = "INITIATION DU " + date;
+        adminDateSelect.appendChild(option);
+    });
+}
+
+// Mettre à jour l'affichage
+function updateDashboardUI() {
+    const selectedKey = adminDateSelect.value;
+    if (!selectedKey) return;
+
+    const stats = dashboardData[selectedKey];
+
+    if (stats) {
+        noDataMsg.classList.add('hidden');
+        document.querySelector('.stats-grid').style.display = 'grid';
+
+        // Animation des compteurs
+        animateValue(statTotal, 0, stats.total, 1000);
+        animateValue(statLeader, 0, stats.leader, 1000);
+        animateValue(statFollower, 0, stats.follower, 1000);
+        animateValue(statRepas, 0, stats.repas, 1000);
+    } else {
+        document.querySelector('.stats-grid').style.display = 'none';
+        noDataMsg.classList.remove('hidden');
+    }
+}
+
+// Animation ludique des compteurs
+function animateValue(obj, start, end, duration) {
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 4);
+        obj.innerHTML = Math.floor(easeProgress * (end - start) + start);
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        } else {
+            obj.innerHTML = end;
+        }
+    };
+    window.requestAnimationFrame(step);
 }

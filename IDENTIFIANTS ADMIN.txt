@@ -1,0 +1,21 @@
+IDENTIFIANTS ADMINISTRATEURS - RÉSERVATION CLUNY
+=================================================
+
+⚠️ CONFIDENTIEL — NE PAS PARTAGER
+
+Ces identifiants permettent d'accéder au Tableau de Bord Admin
+du formulaire de réservation Initiation Cluny.
+
+Login : N° de téléphone
+Mot de passe : Code PIN à 4 chiffres
+
+-------------------------------------------------
+
+NOM                 | TÉLÉPHONE      | CODE PIN
+-------------------------------------------------
+GERMAIN Johnny      | 0650178078     | 7291
+GENEVIEVE Erwan     | 0766281613     | 4538
+-------------------------------------------------
+
+⚡ Pour ajouter un nouvel admin :
+   → Mettre à jour ce fichier + l'onglet "ADMINS ACCES" du Google Sheet

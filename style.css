@@ -473,3 +473,341 @@ button[type="submit"]:disabled {
         opacity: 0;
     }
 }
+
+/* ===========================
+   ADMIN BUTTON
+=========================== */
+.admin-btn {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.admin-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================
+   LOGIN MODAL
+=========================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 20px;
+}
+
+.modal-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 380px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    animation: modalAppear 0.3s ease;
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #999;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #333;
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #2e8b3a;
+    margin-top: 10px;
+}
+
+.modal-body .form-group {
+    margin-bottom: 14px;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #2e8b3a, #3dba55);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(46, 139, 58, 0.35);
+}
+
+/* ===========================
+   ADMIN DASHBOARD
+=========================== */
+.admin-dashboard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(160deg, #0a2e12, #14532d, #1a7a2e);
+    z-index: 3000;
+    overflow-y: auto;
+    padding: 30px 20px;
+    animation: dashboardSlideIn 0.4s ease;
+}
+
+@keyframes dashboardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.admin-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 16px;
+    background: #fff;
+    padding: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.admin-title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 3px;
+    margin: 12px 0 4px;
+}
+
+.admin-subtitle {
+    font-family: 'Roboto', sans-serif;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    margin-bottom: 16px;
+}
+
+.admin-logout-btn {
+    display: inline-block;
+    padding: 8px 24px;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    background: transparent;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-logout-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+.admin-content {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.admin-content .form-group label {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.admin-content .input-wrapper {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-content .input-wrapper select {
+    color: #fff;
+}
+
+.admin-content .input-wrapper .input-icon {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.admin-content .select-arrow {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===========================
+   STATS GRID
+=========================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 20px 14px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.stat-number {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.stat-label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    opacity: 0.7;
+}
+
+/* Couleurs individuelles */
+.stat-total .stat-number {
+    color: #52c96e;
+}
+
+.stat-total .stat-label {
+    color: #a8e6b4;
+}
+
+.stat-total {
+    border-color: rgba(82, 201, 110, 0.3);
+}
+
+.stat-leader .stat-number {
+    color: #64b5f6;
+}
+
+.stat-leader .stat-label {
+    color: #90caf9;
+}
+
+.stat-leader {
+    border-color: rgba(100, 181, 246, 0.3);
+}
+
+.stat-follower .stat-number {
+    color: #ef5350;
+}
+
+.stat-follower .stat-label {
+    color: #ef9a9a;
+}
+
+.stat-follower {
+    border-color: rgba(239, 83, 80, 0.3);
+}
+
+.stat-repas .stat-number {
+    color: #ffb74d;
+}
+
+.stat-repas .stat-label {
+    color: #ffe0b2;
+}
+
+.stat-repas {
+    border-color: rgba(255, 183, 77, 0.3);
+}
+
+.no-data-msg {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 30px;
+    font-size: 0.95rem;
+}
+
+.hidden {
+    display: none !important;
+}
