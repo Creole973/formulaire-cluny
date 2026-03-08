@@ -34,6 +34,7 @@ document.getElementById('clunyForm').addEventListener('submit', function (e) {
         whatsapp: document.getElementById('whatsapp').value,
         telephone: document.getElementById('telephone').value,
         activites: document.getElementById('activites').value,
+        repas: document.getElementById('repas').value,
         positionnement: document.getElementById('positionnement').value
     };
 
