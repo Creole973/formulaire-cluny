@@ -163,6 +163,17 @@ label {
     color: #b0b0b0;
 }
 
+/* Date input styling */
+.input-wrapper input[type="date"] {
+    color: #555;
+    cursor: pointer;
+}
+
+.input-wrapper input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(40%);
+    cursor: pointer;
+}
+
 /* ===========================
    SELECT WRAPPER
 =========================== */

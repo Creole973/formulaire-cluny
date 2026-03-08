@@ -33,8 +33,8 @@
 
                 <!-- DATE -->
                 <div class="form-group">
-                    <label for="dateEvent">DATE</label>
-                    <div class="input-wrapper select-wrapper">
+                    <label for="dateEvent">DATE DE L'ÉVÈNEMENT</label>
+                    <div class="input-wrapper">
                         <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.8">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -42,14 +42,7 @@
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
-                        <select id="dateEvent" name="dateEvent" required>
-                            <option value="" disabled selected>Choisissez une date</option>
-                            <option value="22 Mars 2026">📅 Samedi 22 Mars 2026</option>
-                        </select>
-                        <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <polyline points="6 9 12 15 18 9" />
-                        </svg>
+                        <input type="date" id="dateEvent" name="dateEvent" required>
                     </div>
                 </div>
 

@@ -27,9 +27,14 @@ document.getElementById('clunyForm').addEventListener('submit', function (e) {
     btn.textContent = "TRAITEMENT...";
     statusMsg.textContent = "";
 
+    // Formater la date (YYYY-MM-DD → DD/MM/YYYY)
+    const rawDate = document.getElementById('dateEvent').value;
+    const [year, month, day] = rawDate.split('-');
+    const formattedDate = day + '/' + month + '/' + year;
+
     // Collect form data
     const formData = {
-        dateEvent: document.getElementById('dateEvent').value,
+        dateEvent: formattedDate,
         nom: document.getElementById('nom').value,
         prenom: document.getElementById('prenom').value,
         whatsapp: document.getElementById('whatsapp').value,
