@@ -660,6 +660,14 @@ button[type="submit"]:disabled {
     margin-bottom: 16px;
 }
 
+.admin-header-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .admin-logout-btn {
     display: inline-block;
     padding: 8px 24px;
@@ -678,6 +686,27 @@ button[type="submit"]:disabled {
 .admin-logout-btn:hover {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.7);
+}
+
+.admin-refresh-btn {
+    display: inline-block;
+    padding: 8px 24px;
+    border: 1.5px solid rgba(100, 200, 255, 0.5);
+    background: rgba(100, 200, 255, 0.12);
+    color: #7dd4f8;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.admin-refresh-btn:hover {
+    background: rgba(100, 200, 255, 0.25);
+    border-color: rgba(100, 200, 255, 0.9);
+    color: #fff;
 }
 
 .admin-content {

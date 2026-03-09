@@ -245,6 +245,11 @@ adminLogout.addEventListener('click', () => {
     adminDashboard.classList.add('hidden');
 });
 
+// Actualiser
+document.getElementById('adminRefresh').addEventListener('click', () => {
+    location.reload();
+});
+
 // Changement de date sur le dashboard
 adminDateSelect.addEventListener('change', updateDashboardUI);
 
