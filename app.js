@@ -247,7 +247,19 @@ adminLogout.addEventListener('click', () => {
 
 // Actualiser
 document.getElementById('adminRefresh').addEventListener('click', () => {
-    location.reload();
+    const btn = document.getElementById('adminRefresh');
+    btn.textContent = '⏳ ...';
+    btn.disabled = true;
+    dashboardData = {};
+    fetchDashboardStats(true, () => {
+        btn.textContent = '↻ ACTUALISER';
+        btn.disabled = false;
+    });
+    // Fallback si callback non appelé (données déjà en cache)
+    setTimeout(() => {
+        btn.textContent = '↻ ACTUALISER';
+        btn.disabled = false;
+    }, 8000);
 });
 
 // Changement de date sur le dashboard

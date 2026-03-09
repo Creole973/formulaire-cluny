@@ -670,17 +670,18 @@ button[type="submit"]:disabled {
 
 .admin-logout-btn {
     display: inline-block;
-    padding: 8px 24px;
+    padding: 8px 20px;
     border: 1.5px solid rgba(255, 255, 255, 0.4);
     background: transparent;
     color: #fff;
     font-family: 'Roboto', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .admin-logout-btn:hover {
@@ -690,17 +691,18 @@ button[type="submit"]:disabled {
 
 .admin-refresh-btn {
     display: inline-block;
-    padding: 8px 24px;
+    padding: 8px 20px;
     border: 1.5px solid rgba(100, 200, 255, 0.5);
     background: rgba(100, 200, 255, 0.12);
     color: #7dd4f8;
     font-family: 'Roboto', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 1.2px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .admin-refresh-btn:hover {
