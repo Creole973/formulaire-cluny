@@ -184,7 +184,7 @@ loginClose.addEventListener('click', () => {
 
 // Tentative de connexion
 function attemptLogin() {
-    const phone = adminPhone.value.trim().replace(/\s/g, '');
+    const phone = adminPhone.value.trim().replace(/[\s\-\.\(\)]/g, '');
     const pass = adminPass.value.trim();
 
     if (!phone || !pass) {
@@ -212,8 +212,9 @@ function attemptLogin() {
         return;
     }
 
-    // Vérifier les credentials
-    if (ADMIN_CREDENTIALS[phone] && ADMIN_CREDENTIALS[phone] === pass) {
+    // Vérifier les credentials (normalisation des deux côtés pour robustesse)
+    const matchKey = Object.keys(ADMIN_CREDENTIALS).find(k => k.replace(/[\s\-\.\(\)]/g, '') === phone);
+    if (matchKey && ADMIN_CREDENTIALS[matchKey] === pass) {
         // Connexion réussie
         loginError.textContent = "";
         loginModal.classList.add('hidden');
