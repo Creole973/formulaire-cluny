@@ -106,8 +106,23 @@ function setNombre(n) {
     for (let i = 1; i <= n; i++) {
         container.innerHTML += creerBlocPersonne(i);
     }
+    // Afficher la zone bouton submit
+    const submitZone = document.getElementById('submitZone');
+    if (submitZone) submitZone.classList.remove('hidden');
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.textContent = n === 1 ? "S'INSCRIRE" : "INSCRIRE " + n + " PERSONNES";
+}
+
+function resetForm() {
+    nombrePersonnes = 0;
+    document.querySelectorAll('.nombre-pill').forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    document.getElementById('personnesContainer').innerHTML = '';
+    const submitZone = document.getElementById('submitZone');
+    if (submitZone) submitZone.classList.add('hidden');
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "S'INSCRIRE"; }
 }
 
 // =============================================
@@ -182,49 +197,68 @@ document.getElementById('clunyForm').addEventListener('submit', function (e) {
         }, 5000);
     });
 
-    // Construire la chaîne de prénoms pour l'écran de succès
-    const prenoms = persons.map(function(p) { return p.prenom; });
-    let nomsStr = '';
-    if (prenoms.length === 1) {
-        nomsStr = prenoms[0];
-    } else if (prenoms.length === 2) {
-        nomsStr = prenoms[0] + ' et ' + prenoms[1];
-    } else {
-        nomsStr = prenoms.slice(0, -1).join(', ') + ' et ' + prenoms[prenoms.length - 1];
-    }
-
     setTimeout(function() {
-        showSuccessOverlay(nomsStr, prenoms.length);
+        showSuccessOverlay(persons);
         document.getElementById('clunyForm').reset();
-        setNombre(1);
+        resetForm();
         btn.disabled = false;
-        btn.textContent = "S'INSCRIRE";
     }, 3000);
 });
 
 // =====================
 // OVERLAY DE SUCCÈS
 // =====================
-function showSuccessOverlay(nomsStr, count) {
+function showSuccessOverlay(persons) {
     const overlay = document.getElementById('successOverlay');
     const titleEl = document.getElementById('successTitle');
-    const namesEl = document.getElementById('successNames');
-    const msgEl = document.getElementById('successMsg');
+    const cardsContainer = document.getElementById('confirmationCards');
 
-    if (titleEl) titleEl.textContent = (count > 1) ? 'Inscriptions confirmées !' : 'Inscription confirmée !';
-    if (namesEl) namesEl.textContent = nomsStr || '';
-    if (msgEl) msgEl.textContent = (count > 1)
-        ? 'sont inscrits — à très vite sur la piste de danse 🕺💃'
-        : 'est inscrit·e — à très vite sur la piste de danse 🕺💃';
+    const count = persons.length;
+    if (titleEl) titleEl.textContent = count > 1 ? 'Inscriptions confirmées !' : 'Inscription confirmée !';
+
+    // Générer une carte par personne
+    if (cardsContainer) {
+        cardsContainer.innerHTML = persons.map(function(p, idx) {
+            const isLeader = p.positionnement === 'Leader';
+            const badgeClass = isLeader ? 'leader' : 'follower';
+            return '<div class="confirmation-card" style="animation-delay:' + (idx * 0.1) + 's">' +
+                '<svg class="card-check" viewBox="0 0 52 52">' +
+                    '<circle class="card-circle" cx="26" cy="26" r="24" fill="none"/>' +
+                    '<path class="card-tick" fill="none" d="M14 27l8 8 16-16"/>' +
+                '</svg>' +
+                '<div class="card-info">' +
+                    '<div class="card-name">' + p.prenom + ' ' + p.nom + '</div>' +
+                    '<div class="card-details">' +
+                        '<div class="card-detail">' +
+                            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13">' +
+                                '<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>' +
+                                '<circle cx="12" cy="9" r="2.5"/>' +
+                            '</svg>' +
+                            '<span>' + p.activites + '</span>' +
+                        '</div>' +
+                        '<div class="card-detail">' +
+                            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13">' +
+                                '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>' +
+                                '<circle cx="9" cy="7" r="4"/>' +
+                                '<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>' +
+                                '<path d="M16 3.13a4 4 0 0 1 0 7.75"/>' +
+                            '</svg>' +
+                            '<span class="card-badge ' + badgeClass + '">' + p.positionnement + '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+    }
 
     overlay.classList.remove('hidden');
     launchConfetti();
 
-    // Auto-fermeture après 8 secondes
+    // Auto-fermeture après 10 secondes
     const autoClose = setTimeout(function() {
         overlay.classList.add('hidden');
         window.location.reload();
-    }, 8000);
+    }, 10000);
 
     // Fermer aussi si on clique dessus
     overlay.addEventListener('click', function handler() {
@@ -276,7 +310,6 @@ let ADMIN_CREDENTIALS = {};
 
 // Pré-chargement des données en arrière-plan + init blocs personnes
 document.addEventListener('DOMContentLoaded', function() {
-    setNombre(1);
     fetchDashboardStats(true);
 });
 

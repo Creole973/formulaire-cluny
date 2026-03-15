@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="stylesheet" href="style.css?v=20260315b">
+    <link rel="stylesheet" href="style.css?v=20260315c">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 
@@ -34,8 +34,9 @@
                 <img src="logo.png" alt="Sonrisa de Baile" class="logo">
             </div>
 
-            <!-- Titre -->
-            <h1 class="form-title">RESERVATION INITIATION<br>CLUNY</h1>
+            <!-- Titre style Perroquet -->
+            <h1 class="form-title">RESERVATION<br>INITIATION</h1>
+            <p class="form-subtitle">Sonrisa de Baile — Cluny</p>
 
             <!-- Formulaire -->
             <form id="clunyForm">
@@ -59,7 +60,7 @@
                 <div class="form-group">
                     <label>NOMBRE DE PERSONNES À INSCRIRE</label>
                     <div class="nombre-pills">
-                        <button type="button" class="nombre-pill active" onclick="setNombre(1)">1</button>
+                        <button type="button" class="nombre-pill" onclick="setNombre(1)">1</button>
                         <button type="button" class="nombre-pill" onclick="setNombre(2)">2</button>
                         <button type="button" class="nombre-pill" onclick="setNombre(3)">3</button>
                         <button type="button" class="nombre-pill" onclick="setNombre(4)">4</button>
@@ -67,13 +68,15 @@
                     </div>
                 </div>
 
-                <!-- BLOCS PERSONNES (générés dynamiquement) -->
+                <!-- BLOCS PERSONNES (générés dynamiquement après sélection) -->
                 <div id="personnesContainer"></div>
 
-                <!-- BOUTON -->
-                <button type="submit" id="submitBtn">S'INSCRIRE</button>
+                <!-- BOUTON + STATUS (cachés jusqu'à sélection d'un nombre) -->
+                <div id="submitZone" class="hidden">
+                    <button type="submit" id="submitBtn">S'INSCRIRE</button>
+                    <p id="statusMessage"></p>
+                </div>
 
-                <p id="statusMessage"></p>
             </form>
 
             <!-- Footer -->
@@ -81,22 +84,17 @@
         </div>
     </div>
 
-    <!-- Overlay de succès -->
+    <!-- Overlay de succès avec cartes par personne -->
     <div id="successOverlay" class="success-overlay hidden">
         <div class="confetti-container" id="confettiContainer"></div>
         <div class="success-card">
             <div class="success-logo-wrapper">
                 <img src="logo.png" alt="Sonrisa de Baile" class="success-logo">
             </div>
-            <div class="success-checkmark">
-                <svg viewBox="0 0 52 52">
-                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none" />
-                    <path class="checkmark-check" fill="none" d="M14 27l8 8 16-16" />
-                </svg>
-            </div>
             <h2 class="success-title" id="successTitle">Inscription confirmée !</h2>
-            <p class="success-names" id="successNames"></p>
-            <p class="success-message" id="successMsg">est inscrit·e — à très vite sur la piste de danse 🕺💃</p>
+            <p class="success-subtitle-msg">à très vite sur la piste de danse 🕺💃</p>
+            <!-- Cartes générées dynamiquement par app.js -->
+            <div id="confirmationCards" class="confirmation-cards"></div>
             <div class="success-icons">🎶 🌟 🎉 🌟 🎶</div>
         </div>
     </div>
@@ -204,7 +202,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=20260315"></script>
+    <script src="app.js?v=20260315c"></script>
 </body>
 
 </html>
