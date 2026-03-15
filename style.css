@@ -1044,10 +1044,10 @@ button[type="submit"]:disabled {
    BLOCS PERSONNES
 =========================== */
 .personne-bloc {
-    background: rgba(0, 0, 0, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 16px;
-    padding: 16px 14px 18px;
+    background: rgba(0, 0, 0, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 18px;
+    padding: 14px 14px 18px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -1062,25 +1062,28 @@ button[type="submit"]:disabled {
 .personne-titre {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    color: #fff;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 900;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    padding-bottom: 4px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 9px 22px;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1.5px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    color: #fff;
 }
 
 .personne-num {
-    width: 28px;
-    height: 28px;
-    background: rgba(255, 255, 255, 0.25);
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 900;
     color: #fff;
     flex-shrink: 0;
