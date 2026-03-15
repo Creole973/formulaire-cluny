@@ -3,8 +3,8 @@
 // =============================================
 let nombrePersonnes = 1;
 
-// Couleurs du logo Sonrisa de Baile (une par personne)
-const PERSON_COLORS = ['#e91e63', '#ff6600', '#f9a825', '#9c27b0', '#2196f3'];
+// Couleur des blocs personnes
+const PERSON_COLORS = ['#111111', '#111111', '#111111', '#111111', '#111111'];
 
 const _SVG = {
     person: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
@@ -21,7 +21,7 @@ function creerBlocPersonne(num) {
     const color = PERSON_COLORS[(num - 1) % PERSON_COLORS.length];
     return `
     <div class="personne-bloc" id="bloc_${id}" style="border-color:${color}55;">
-        <div class="personne-titre" style="border-color:${color};color:${color};">
+        <div class="personne-titre" style="border-color:${color};">
             <span class="personne-num" style="background:${color};">${num}</span>
             PERSONNE ${num}
         </div>
