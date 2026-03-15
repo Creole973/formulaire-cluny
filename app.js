@@ -1,4 +1,116 @@
 // =============================================
+// INSCRIPTION MULTIPLE — CONFIGURATION
+// =============================================
+let nombrePersonnes = 1;
+
+const _SVG = {
+    person: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+    whatsapp: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>`,
+    tel: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+    activite: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    repas: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>`,
+    positionnement: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    arrow: `<svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`
+};
+
+function creerBlocPersonne(num) {
+    const id = `p${num}`;
+    return `
+    <div class="personne-bloc" id="bloc_${id}">
+        <div class="personne-titre">
+            <span class="personne-num">${num}</span>
+            PERSONNE ${num}
+        </div>
+        <div class="form-group">
+            <label>NOM</label>
+            <div class="input-wrapper">${_SVG.person}
+                <input type="text" id="${id}_nom" placeholder="Entrez le nom" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>PRÉNOM</label>
+            <div class="input-wrapper">${_SVG.person}
+                <input type="text" id="${id}_prenom" placeholder="Entrez le prénom" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>DÉJÀ INSCRIT SUR WHATSAPP</label>
+            <div class="input-wrapper select-wrapper">${_SVG.whatsapp}
+                <select id="${id}_whatsapp" required onchange="toggleTel('${id}', this.value)">
+                    <option value="" disabled selected>Déjà inscrit sur WhatsApp ?</option>
+                    <option value="OUI">OUI</option>
+                    <option value="NON">NON</option>
+                </select>${_SVG.arrow}
+            </div>
+        </div>
+        <div class="form-group tel-field" id="${id}_telGroup" style="display:none;">
+            <label>N° TÉLÉPHONE</label>
+            <div class="input-wrapper">${_SVG.tel}
+                <input type="tel" id="${id}_telephone" placeholder="06 XX XX XX XX">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>ACTIVITÉS</label>
+            <div class="input-wrapper select-wrapper">${_SVG.activite}
+                <select id="${id}_activites" required>
+                    <option value="" disabled selected>Choisissez une activité</option>
+                    <option value="Bachata">Bachata</option>
+                    <option value="Salsa">Salsa</option>
+                    <option value="Bachata + Salsa">Bachata + Salsa</option>
+                </select>${_SVG.arrow}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>REPAS</label>
+            <div class="input-wrapper select-wrapper">${_SVG.repas}
+                <select id="${id}_repas" required>
+                    <option value="" disabled selected>Repas sur place ?</option>
+                    <option value="OUI">OUI</option>
+                    <option value="NON">NON</option>
+                </select>${_SVG.arrow}
+            </div>
+        </div>
+        <div class="form-group">
+            <label>POSITIONNEMENT</label>
+            <div class="input-wrapper select-wrapper">${_SVG.positionnement}
+                <select id="${id}_positionnement" required>
+                    <option value="" disabled selected>Choisissez votre positionnement</option>
+                    <option value="Leader">Leader</option>
+                    <option value="Follower">Follower</option>
+                </select>${_SVG.arrow}
+            </div>
+        </div>
+    </div>`;
+}
+
+function toggleTel(id, val) {
+    const grp = document.getElementById(id + '_telGroup');
+    const input = document.getElementById(id + '_telephone');
+    if (val === 'NON') {
+        grp.style.display = '';
+        input.required = true;
+    } else {
+        grp.style.display = 'none';
+        input.required = false;
+        input.value = '';
+    }
+}
+
+function setNombre(n) {
+    nombrePersonnes = n;
+    document.querySelectorAll('.nombre-pill').forEach(function(btn, i) {
+        btn.classList.toggle('active', i + 1 === n);
+    });
+    const container = document.getElementById('personnesContainer');
+    container.innerHTML = '';
+    for (let i = 1; i <= n; i++) {
+        container.innerHTML += creerBlocPersonne(i);
+    }
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.textContent = n === 1 ? "S'INSCRIRE" : "INSCRIRE " + n + " PERSONNES";
+}
+
+// =============================================
 // SOUMISSION DU FORMULAIRE
 // =============================================
 document.getElementById('clunyForm').addEventListener('submit', function (e) {
@@ -7,87 +119,110 @@ document.getElementById('clunyForm').addEventListener('submit', function (e) {
     const btn = document.getElementById('submitBtn');
     const statusMsg = document.getElementById('statusMessage');
 
-    // Disable button to prevent double submit
     btn.disabled = true;
     btn.textContent = "TRAITEMENT...";
     statusMsg.textContent = "";
 
     // Formater la date (YYYY-MM-DD → DD/MM/YYYY)
     const rawDate = document.getElementById('dateEvent').value;
-    const [year, month, day] = rawDate.split('-');
-    const formattedDate = day + '/' + month + '/' + year;
-
-    // Collect form data
-    const formData = {
-        dateEvent: formattedDate,
-        nom: document.getElementById('nom').value,
-        prenom: document.getElementById('prenom').value,
-        whatsapp: document.getElementById('whatsapp').value,
-        telephone: document.getElementById('telephone').value,
-        activites: document.getElementById('activites').value,
-        repas: document.getElementById('repas').value,
-        positionnement: document.getElementById('positionnement').value
-    };
+    const parts = rawDate.split('-');
+    const formattedDate = parts[2] + '/' + parts[1] + '/' + parts[0];
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0kdd2uqlNxqtX_Ii1r4ETzdSS7YHGwKJ59fAndUhu0TvW5LrzdeV1ytR75kAO-C2fdw/exec";
 
+    // Collecter les données de chaque personne
+    const persons = [];
+    for (let i = 1; i <= nombrePersonnes; i++) {
+        const id = 'p' + i;
+        const whatsapp = document.getElementById(id + '_whatsapp').value;
+        persons.push({
+            dateEvent: formattedDate,
+            nom: document.getElementById(id + '_nom').value,
+            prenom: document.getElementById(id + '_prenom').value,
+            whatsapp: whatsapp,
+            telephone: whatsapp === 'NON' ? document.getElementById(id + '_telephone').value : '',
+            activites: document.getElementById(id + '_activites').value,
+            repas: document.getElementById(id + '_repas').value,
+            positionnement: document.getElementById(id + '_positionnement').value
+        });
+    }
+
     // ========================================
     // MÉTHODE IFRAME : contourne 100% du CORS
+    // Soumettre chaque personne via un iframe
     // ========================================
+    persons.forEach(function(data, index) {
+        const iframeName = 'hidden_iframe_' + Date.now() + '_' + index;
+        const iframe = document.createElement('iframe');
+        iframe.name = iframeName;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
 
-    // Créer un iframe caché
-    const iframeName = 'hidden_iframe_' + Date.now();
-    const iframe = document.createElement('iframe');
-    iframe.name = iframeName;
-    iframe.style.display = 'none';
-    document.body.appendChild(iframe);
+        const hiddenForm = document.createElement('form');
+        hiddenForm.method = 'GET';
+        hiddenForm.action = SCRIPT_URL;
+        hiddenForm.target = iframeName;
+        hiddenForm.style.display = 'none';
 
-    // Créer un formulaire caché qui cible l'iframe
-    const hiddenForm = document.createElement('form');
-    hiddenForm.method = 'GET';
-    hiddenForm.action = SCRIPT_URL;
-    hiddenForm.target = iframeName;
-    hiddenForm.style.display = 'none';
+        Object.keys(data).forEach(function(key) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = key;
+            input.value = data[key];
+            hiddenForm.appendChild(input);
+        });
 
-    // Ajouter chaque champ comme input hidden
-    Object.keys(formData).forEach(key => {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = formData[key];
-        hiddenForm.appendChild(input);
+        document.body.appendChild(hiddenForm);
+        hiddenForm.submit();
+
+        // Nettoyer après 5 secondes
+        setTimeout(function() {
+            try { document.body.removeChild(iframe); } catch (err) { }
+            try { document.body.removeChild(hiddenForm); } catch (err) { }
+        }, 5000);
     });
 
-    document.body.appendChild(hiddenForm);
+    // Construire la chaîne de prénoms pour l'écran de succès
+    const prenoms = persons.map(function(p) { return p.prenom; });
+    let nomsStr = '';
+    if (prenoms.length === 1) {
+        nomsStr = prenoms[0];
+    } else if (prenoms.length === 2) {
+        nomsStr = prenoms[0] + ' et ' + prenoms[1];
+    } else {
+        nomsStr = prenoms.slice(0, -1).join(', ') + ' et ' + prenoms[prenoms.length - 1];
+    }
 
-    // Soumettre le formulaire vers l'iframe
-    hiddenForm.submit();
-
-    // Attendre un peu puis montrer le succès et nettoyer
-    setTimeout(() => {
-        showSuccessOverlay();
+    setTimeout(function() {
+        showSuccessOverlay(nomsStr, prenoms.length);
         document.getElementById('clunyForm').reset();
+        setNombre(1);
         btn.disabled = false;
         btn.textContent = "S'INSCRIRE";
-
-        // Nettoyer les éléments temporaires
-        document.body.removeChild(iframe);
-        document.body.removeChild(hiddenForm);
     }, 3000);
 });
 
 // =====================
 // OVERLAY DE SUCCÈS
 // =====================
-function showSuccessOverlay() {
+function showSuccessOverlay(nomsStr, count) {
     const overlay = document.getElementById('successOverlay');
+    const titleEl = document.getElementById('successTitle');
+    const namesEl = document.getElementById('successNames');
+    const msgEl = document.getElementById('successMsg');
+
+    if (titleEl) titleEl.textContent = (count > 1) ? 'Inscriptions confirmées !' : 'Inscription confirmée !';
+    if (namesEl) namesEl.textContent = nomsStr || '';
+    if (msgEl) msgEl.textContent = (count > 1)
+        ? 'sont inscrits — à très vite sur la piste de danse 🕺💃'
+        : 'est inscrit·e — à très vite sur la piste de danse 🕺💃';
+
     overlay.classList.remove('hidden');
     launchConfetti();
 
     // Auto-fermeture après 8 secondes
-    const autoClose = setTimeout(() => {
+    const autoClose = setTimeout(function() {
         overlay.classList.add('hidden');
-        // Recharger la page pour remettre à zéro le formulaire
         window.location.reload();
     }, 8000);
 
@@ -102,7 +237,6 @@ function showSuccessOverlay() {
 
 function launchConfetti() {
     const container = document.getElementById('confettiContainer');
-    // Palette verte Sonrisa
     const colors = ['#2e8b3a', '#3dba55', '#52c96e', '#a8e6b4', '#1a7a2e', '#f9a825', '#ff6600', '#e91e63'];
     const count = 80;
 
@@ -117,20 +251,18 @@ function launchConfetti() {
         const size = 8 + Math.random() * 10;
         const isCircle = Math.random() > 0.5;
 
-        piece.style.cssText = `
-            left: ${left}%;
-            background: ${color};
-            width: ${size}px;
-            height: ${size}px;
-            border-radius: ${isCircle ? '50%' : '2px'};
-            animation-duration: ${duration}s;
-            animation-delay: ${delay}s;
-        `;
+        piece.style.cssText =
+            'left:' + left + '%;' +
+            'background:' + color + ';' +
+            'width:' + size + 'px;' +
+            'height:' + size + 'px;' +
+            'border-radius:' + (isCircle ? '50%' : '2px') + ';' +
+            'animation-duration:' + duration + 's;' +
+            'animation-delay:' + delay + 's;';
         container.appendChild(piece);
     }
 
-    // Nettoyer après la fin de l'animation
-    setTimeout(() => {
+    setTimeout(function() {
         container.innerHTML = '';
     }, 5000);
 }
@@ -142,9 +274,10 @@ function launchConfetti() {
 // Identifiants récupérés depuis Google Sheets
 let ADMIN_CREDENTIALS = {};
 
-// Pré-chargement des données en arrière-plan
-document.addEventListener('DOMContentLoaded', () => {
-    fetchDashboardStats(true); // true = silent load
+// Pré-chargement des données en arrière-plan + init blocs personnes
+document.addEventListener('DOMContentLoaded', function() {
+    setNombre(1);
+    fetchDashboardStats(true);
 });
 
 // UI Elements Admin
@@ -166,11 +299,10 @@ const statFollower = document.getElementById('statFollower');
 const statRepas = document.getElementById('statRepas');
 const noDataMsg = document.getElementById('noDataMsg');
 
-// Données des stats
 let dashboardData = {};
 
 // Ouvrir la modal de login
-adminBtn.addEventListener('click', () => {
+adminBtn.addEventListener('click', function() {
     loginModal.classList.remove('hidden');
     adminPhone.value = '';
     adminPass.value = '';
@@ -178,7 +310,7 @@ adminBtn.addEventListener('click', () => {
 });
 
 // Fermer la modal
-loginClose.addEventListener('click', () => {
+loginClose.addEventListener('click', function() {
     loginModal.classList.add('hidden');
 });
 
@@ -192,18 +324,15 @@ function attemptLogin() {
         return;
     }
 
-    // Si les accès n'ont pas encore chargé — relancer le fetch et réessayer auto
     if (Object.keys(ADMIN_CREDENTIALS).length === 0) {
         loginError.textContent = "⏳ Chargement en cours...";
         loginSubmit.textContent = "CHARGEMENT...";
         loginSubmit.disabled = true;
 
-        // Relancer le fetch et réessayer le login automatiquement
-        fetchDashboardStats(false, function () {
+        fetchDashboardStats(false, function() {
             loginSubmit.disabled = false;
             loginSubmit.textContent = "CONNEXION";
             if (Object.keys(ADMIN_CREDENTIALS).length > 0) {
-                // Réessayer automatiquement
                 attemptLogin();
             } else {
                 loginError.textContent = "Erreur serveur. Vérifiez votre connexion internet.";
@@ -212,15 +341,14 @@ function attemptLogin() {
         return;
     }
 
-    // Vérifier les credentials (normalisation des deux côtés pour robustesse)
-    const matchKey = Object.keys(ADMIN_CREDENTIALS).find(k => k.replace(/[\s\-\.\(\)]/g, '') === phone);
+    const matchKey = Object.keys(ADMIN_CREDENTIALS).find(function(k) {
+        return k.replace(/[\s\-\.\(\)]/g, '') === phone;
+    });
     if (matchKey && ADMIN_CREDENTIALS[matchKey] === pass) {
-        // Connexion réussie
         loginError.textContent = "";
         loginModal.classList.add('hidden');
         openDashboard();
     } else {
-        // Échec — effet de secousse
         loginError.textContent = "Identifiants incorrects.";
         loginModal.querySelector('.modal-card').animate([
             { transform: 'translateX(0)' },
@@ -242,22 +370,21 @@ function openDashboard() {
 }
 
 // Déconnexion
-adminLogout.addEventListener('click', () => {
+adminLogout.addEventListener('click', function() {
     adminDashboard.classList.add('hidden');
 });
 
 // Actualiser
-document.getElementById('adminRefresh').addEventListener('click', () => {
+document.getElementById('adminRefresh').addEventListener('click', function() {
     const btn = document.getElementById('adminRefresh');
     btn.textContent = '⏳ ...';
     btn.disabled = true;
     dashboardData = {};
-    fetchDashboardStats(true, () => {
+    fetchDashboardStats(true, function() {
         btn.textContent = '↻ ACTUALISER';
         btn.disabled = false;
     });
-    // Fallback si callback non appelé (données déjà en cache)
-    setTimeout(() => {
+    setTimeout(function() {
         btn.textContent = '↻ ACTUALISER';
         btn.disabled = false;
     }, 8000);
@@ -267,7 +394,7 @@ document.getElementById('adminRefresh').addEventListener('click', () => {
 adminDateSelect.addEventListener('change', updateDashboardUI);
 
 // Callback global pour le JSONP
-window.handleDashboardStats = function (data) {
+window.handleDashboardStats = function(data) {
     if (data.status === 'success') {
         dashboardData = data.stats;
         if (data.admins) {
@@ -278,7 +405,6 @@ window.handleDashboardStats = function (data) {
         loginSubmit.textContent = "CONNEXION";
         loginSubmit.disabled = false;
 
-        // Appeler le callback en attente si présent
         if (_fetchCallback) {
             var cb = _fetchCallback;
             _fetchCallback = null;
@@ -296,12 +422,10 @@ window.handleDashboardStats = function (data) {
     }
 };
 
-// Variable pour stocker le callback en attente
 var _fetchCallback = null;
 var _fetchRetries = 0;
 var _fetchTimeout = null;
 
-// Récupérer les stats depuis le Sheet (Via JSONP) — avec retry et timeout
 function fetchDashboardStats(isSilent, callback) {
     if (!isSilent) {
         loginSubmit.textContent = "CHARGEMENT...";
@@ -313,19 +437,17 @@ function fetchDashboardStats(isSilent, callback) {
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz0kdd2uqlNxqtX_Ii1r4ETzdSS7YHGwKJ59fAndUhu0TvW5LrzdeV1ytR75kAO-C2fdw/exec";
 
-    // Nettoyer tout ancien script/timeout
     if (_fetchTimeout) clearTimeout(_fetchTimeout);
 
     const script = document.createElement('script');
     script.src = SCRIPT_URL + "?action=getStats&callback=handleDashboardStats&ts=" + Date.now();
 
-    // Gestion d'erreur : si le script échoue, on réessaie
-    script.onerror = function () {
+    script.onerror = function() {
         script.remove();
         _fetchRetries++;
         if (_fetchRetries <= 3) {
             console.log("JSONP retry " + _fetchRetries + "/3...");
-            setTimeout(function () { fetchDashboardStats(isSilent); }, 1500);
+            setTimeout(function() { fetchDashboardStats(isSilent); }, 1500);
         } else {
             _fetchRetries = 0;
             loginSubmit.textContent = "CONNEXION";
@@ -338,7 +460,7 @@ function fetchDashboardStats(isSilent, callback) {
         }
     };
 
-    script.onload = function () {
+    script.onload = function() {
         script.remove();
         _fetchRetries = 0;
         if (_fetchTimeout) clearTimeout(_fetchTimeout);
@@ -346,8 +468,7 @@ function fetchDashboardStats(isSilent, callback) {
 
     document.body.appendChild(script);
 
-    // Timeout de sécurité : si rien après 10 secondes, réessayer
-    _fetchTimeout = setTimeout(function () {
+    _fetchTimeout = setTimeout(function() {
         if (Object.keys(ADMIN_CREDENTIALS).length === 0 && _fetchRetries < 3) {
             _fetchRetries++;
             console.log("JSONP timeout, retry " + _fetchRetries + "/3...");
@@ -366,18 +487,16 @@ function fetchDashboardStats(isSilent, callback) {
     }, 10000);
 }
 
-// Peupler la liste des dates
 function populateDateSelect() {
     adminDateSelect.innerHTML = '<option value="_TOTAL_">TOUTES LES DATES (GLOBAL)</option>';
 
-    const dates = Object.keys(dashboardData).filter(k => k !== '_TOTAL_');
-    dates.sort((a, b) => {
-        const [dayA, monthA, yearA] = a.split('/');
-        const [dayB, monthB, yearB] = b.split('/');
-        return new Date(yearB, monthB - 1, dayB) - new Date(yearA, monthA - 1, dayA);
+    const dates = Object.keys(dashboardData).filter(function(k) { return k !== '_TOTAL_'; });
+    dates.sort(function(a, b) {
+        const pA = a.split('/'), pB = b.split('/');
+        return new Date(pB[2], pB[1] - 1, pB[0]) - new Date(pA[2], pA[1] - 1, pA[0]);
     });
 
-    dates.forEach(date => {
+    dates.forEach(function(date) {
         const option = document.createElement('option');
         option.value = date;
         option.text = "INITIATION DU " + date;
@@ -385,7 +504,6 @@ function populateDateSelect() {
     });
 }
 
-// Mettre à jour l'affichage
 function updateDashboardUI() {
     const selectedKey = adminDateSelect.value;
     if (!selectedKey) return;
@@ -395,8 +513,6 @@ function updateDashboardUI() {
     if (stats) {
         noDataMsg.classList.add('hidden');
         document.querySelector('.stats-grid').style.display = 'grid';
-
-        // Animation des compteurs
         animateValue(statTotal, 0, stats.total, 1000);
         animateValue(statLeader, 0, stats.leader, 1000);
         animateValue(statFollower, 0, stats.follower, 1000);
@@ -407,10 +523,9 @@ function updateDashboardUI() {
     }
 }
 
-// Animation ludique des compteurs
 function animateValue(obj, start, end, duration) {
     let startTimestamp = null;
-    const step = (timestamp) => {
+    const step = function(timestamp) {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         const easeProgress = 1 - Math.pow(1 - progress, 4);

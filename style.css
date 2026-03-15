@@ -842,3 +842,106 @@ button[type="submit"]:disabled {
 .hidden {
     display: none !important;
 }
+
+/* ===========================
+   NOMBRE DE PERSONNES — PILLS
+=========================== */
+.nombre-pills {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 6px 0 2px;
+}
+
+.nombre-pill {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.nombre-pill:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.08);
+}
+
+.nombre-pill.active {
+    background: #fff;
+    color: #2e8b3a;
+    border-color: #fff;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.2);
+    transform: scale(1.12);
+}
+
+/* Label centré au-dessus des pills */
+.form-group:has(.nombre-pills) label {
+    text-align: center;
+}
+
+/* ===========================
+   BLOCS PERSONNES
+=========================== */
+.personne-bloc {
+    background: rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 16px 14px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.personne-titre {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.personne-num {
+    width: 28px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+/* ===========================
+   SUCCESS NAMES
+=========================== */
+.success-names {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 900;
+    margin-bottom: 8px;
+    animation: slideUp 0.5s 0.9s ease both;
+}
