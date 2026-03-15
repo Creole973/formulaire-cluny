@@ -254,11 +254,11 @@ function showSuccessOverlay(persons) {
     overlay.classList.remove('hidden');
     launchConfetti();
 
-    // Auto-fermeture après 10 secondes
+    // Auto-fermeture après 20 secondes
     const autoClose = setTimeout(function() {
         overlay.classList.add('hidden');
         window.location.reload();
-    }, 10000);
+    }, 20000);
 
     // Fermer aussi si on clique dessus
     overlay.addEventListener('click', function handler() {
