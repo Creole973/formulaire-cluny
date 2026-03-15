@@ -52,11 +52,11 @@ body {
 }
 
 .logo {
-    width: 210px;
-    height: 210px;
+    width: 260px;
+    height: 260px;
     object-fit: contain;
     background: #fff;
-    border-radius: 20px;
+    border-radius: 22px;
     padding: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
@@ -303,9 +303,15 @@ button[type="submit"]:disabled {
         padding-bottom: 40px;
     }
 
+    .logo-wrapper {
+        padding: 28px 20px 0;
+    }
+
     .logo {
-        width: 170px;
-        height: 170px;
+        width: 260px;
+        height: 260px;
+        max-width: calc(100vw - 60px);
+        max-height: calc(100vw - 60px);
     }
 
     .form-title {
