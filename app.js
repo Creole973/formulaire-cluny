@@ -66,6 +66,7 @@ function creerBlocPersonne(num) {
                 <select id="${id}_repas" required>
                     <option value="" disabled selected>Repas sur place ?</option>
                     <option value="OUI">OUI</option>
+                    <option value="PEUT-ÊTRE">PEUT-ÊTRE</option>
                     <option value="NON">NON</option>
                 </select>${_SVG.arrow}
             </div>
