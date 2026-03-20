@@ -862,6 +862,38 @@ button[type="submit"]:disabled {
     color: #fff;
 }
 
+.btn-google-sheet {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(52, 168, 83, 0.12);
+    border: 1px solid rgba(52, 168, 83, 0.4);
+    border-radius: 10px;
+    padding: 8px 20px;
+    color: #5fcc7f;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    -webkit-text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.btn-google-sheet:hover {
+    background: rgba(52, 168, 83, 0.25);
+    border-color: rgba(52, 168, 83, 0.8);
+    color: #7ee89a;
+    box-shadow: 0 0 16px rgba(52, 168, 83, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-google-sheet:active {
+    transform: translateY(0);
+}
+
 .admin-content {
     max-width: 500px;
     margin: 0 auto;
