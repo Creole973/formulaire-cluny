@@ -614,7 +614,7 @@ function fetchDashboardStats(isSilent, callback) {
 }
 
 function populateDateSelect() {
-    adminDateSelect.innerHTML = '<option value="_TOTAL_">TOUTES LES DATES (GLOBAL)</option>';
+    adminDateSelect.innerHTML = '';
 
     const dates = Object.keys(dashboardData).filter(function(k) { return k !== '_TOTAL_'; });
     dates.sort(function(a, b) {
@@ -628,6 +628,11 @@ function populateDateSelect() {
         option.text = "INITIATION DU " + date;
         adminDateSelect.appendChild(option);
     });
+
+    const globalOption = document.createElement('option');
+    globalOption.value = '_TOTAL_';
+    globalOption.text = 'TOUTES LES DATES (GLOBAL)';
+    adminDateSelect.appendChild(globalOption);
 }
 
 function updateDashboardUI() {
