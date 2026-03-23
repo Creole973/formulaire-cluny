@@ -51,7 +51,10 @@ function creerBlocPersonne(num) {
         <div class="form-group tel-field" id="${id}_telGroup" style="display:none;">
             <label>N° TÉLÉPHONE</label>
             <div class="input-wrapper">${_SVG.tel}
-                <input type="tel" id="${id}_telephone" placeholder="06 XX XX XX XX">
+                <input type="tel" id="${id}_telephone" placeholder="0612345678"
+                       pattern="[0-9]{10}" maxlength="10"
+                       title="Numéro à 10 chiffres (ex: 0612345678)"
+                       oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)">
             </div>
         </div>
         <div class="form-group">
