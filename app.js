@@ -72,9 +72,10 @@ function creerBlocPersonne(num) {
             <div class="input-wrapper select-wrapper">${_SVG.activite}
                 <select id="${id}_activites" required>
                     <option value="" disabled selected>Choisissez une activité</option>
-                    <option value="Bachata">Bachata</option>
-                    <option value="Salsa">Salsa</option>
-                    <option value="Bachata + Salsa">Bachata + Salsa</option>
+                    <option value="Bachata">Bachata — 7 €</option>
+                    <option value="Salsa">Salsa — 7 €</option>
+                    <option value="Bachata + Salsa">Bachata + Salsa — 14 €</option>
+                    <option value="Pratique dansante">Pratique dansante — 5 €</option>
                 </select>${_SVG.arrow}
             </div>
         </div>
