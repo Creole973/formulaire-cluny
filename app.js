@@ -13,6 +13,7 @@ const _SVG = {
     activite: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
     repas: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>`,
     positionnement: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    ville: `<svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>`,
     arrow: `<svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>`
 };
 
@@ -51,6 +52,19 @@ function creerBlocPersonne(num) {
             <label>N° TÉLÉPHONE</label>
             <div class="input-wrapper">${_SVG.tel}
                 <input type="tel" id="${id}_telephone" placeholder="06 XX XX XX XX">
+            </div>
+        </div>
+        <div class="form-group">
+            <label>VILLE</label>
+            <div class="ville-wrapper" id="${id}_villeWrapper">
+                <div class="input-wrapper">${_SVG.ville}
+                    <input type="text" id="${id}_ville" placeholder="Votre ville..."
+                           autocomplete="off"
+                           oninput="handleVilleInput('${id}', this.value)"
+                           onkeydown="handleVilleKeydown(event, '${id}')"
+                           onblur="handleVilleBlur('${id}')">
+                </div>
+                <div class="ville-suggestions" id="${id}_villeSugg"></div>
             </div>
         </div>
         <div class="form-group">
@@ -99,6 +113,79 @@ function toggleTel(id, val) {
         input.required = false;
         input.value = '';
     }
+}
+
+// =============================================
+// AUTOCOMPLETE VILLE (geo.api.gouv.fr)
+// =============================================
+var _villeDebounce = {};
+var _villeFocusedIdx = {};
+
+function handleVilleInput(id, query) {
+    if (_villeDebounce[id]) clearTimeout(_villeDebounce[id]);
+    if (!query || query.length < 2) { hideVilleSugg(id); return; }
+    _villeDebounce[id] = setTimeout(function() {
+        fetch('https://geo.api.gouv.fr/communes?nom=' + encodeURIComponent(query) + '&fields=nom,codeDepartement&boost=population&limit=7')
+            .then(function(r) { return r.json(); })
+            .then(function(data) { showVilleSugg(id, data); })
+            .catch(function() { hideVilleSugg(id); });
+    }, 250);
+}
+
+function showVilleSugg(id, data) {
+    var sugg = document.getElementById(id + '_villeSugg');
+    if (!sugg || !data || !data.length) { hideVilleSugg(id); return; }
+    _villeFocusedIdx[id] = -1;
+    sugg.innerHTML = data.map(function(c) {
+        var nom = c.nom.replace(/'/g, "\\'");
+        return '<div class="ville-sugg-item" onmousedown="handleVilleSuggClick(\'' + id + '\', \'' + nom + '\')">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="13" height="13"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>' +
+            '<span class="ville-sugg-nom">' + c.nom + '</span>' +
+            '<span class="ville-sugg-dept">' + c.codeDepartement + '</span>' +
+            '</div>';
+    }).join('');
+    sugg.style.display = 'block';
+}
+
+function hideVilleSugg(id) {
+    var sugg = document.getElementById(id + '_villeSugg');
+    if (sugg) sugg.style.display = 'none';
+    _villeFocusedIdx[id] = -1;
+}
+
+function handleVilleKeydown(e, id) {
+    var sugg = document.getElementById(id + '_villeSugg');
+    if (!sugg || sugg.style.display === 'none') return;
+    var items = sugg.querySelectorAll('.ville-sugg-item');
+    if (!items.length) return;
+    var idx = (_villeFocusedIdx[id] !== undefined) ? _villeFocusedIdx[id] : -1;
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        idx = (idx + 1) % items.length;
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        idx = (idx - 1 + items.length) % items.length;
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (idx >= 0 && items[idx]) items[idx].dispatchEvent(new MouseEvent('mousedown'));
+        return;
+    } else if (e.key === 'Escape') {
+        hideVilleSugg(id);
+        return;
+    }
+    _villeFocusedIdx[id] = idx;
+    items.forEach(function(item, i) { item.classList.toggle('focused', i === idx); });
+    if (idx >= 0) items[idx].scrollIntoView({ block: 'nearest' });
+}
+
+function handleVilleBlur(id) {
+    setTimeout(function() { hideVilleSugg(id); }, 200);
+}
+
+function handleVilleSuggClick(id, nom) {
+    var input = document.getElementById(id + '_ville');
+    if (input) input.value = nom;
+    hideVilleSugg(id);
 }
 
 function setNombre(n) {
@@ -161,6 +248,7 @@ document.getElementById('clunyForm').addEventListener('submit', function (e) {
             prenom: document.getElementById(id + '_prenom').value,
             whatsapp: whatsapp,
             telephone: whatsapp === 'NON' ? document.getElementById(id + '_telephone').value : '',
+            ville: document.getElementById(id + '_ville') ? document.getElementById(id + '_ville').value : '',
             activites: document.getElementById(id + '_activites').value,
             repas: document.getElementById(id + '_repas').value,
             positionnement: document.getElementById(id + '_positionnement').value
